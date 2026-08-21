@@ -442,6 +442,13 @@
     The retention mechanic:
     one shared stream timestamp -> one unified Earth activity dashboard.
   */
+  <script>
+  // Select the audio element
+  const audio = document.getElementById("bgAudio");
+  
+  // Set the volume to 20% (0.2)
+  audio.volume = 0.2; 
+</script>
 
   const CONFIG = {
     // Illustrative global rates per second.
@@ -526,9 +533,9 @@
     -----------------------------------------
     From another script you can control the audio with:
 
-      document.getElementById("bgAudio").play();
-      document.getElementById("bgAudio").pause();
-      document.getElementById("bgAudio").volume = 0.5;
+      document.getElementById("").play();
+      document.getElementById("").pause();
+      document.getElementById("").volume = 0.5;
 
     For autoplay, browsers generally require the user to interact
     with the page first unless the audio is muted.
