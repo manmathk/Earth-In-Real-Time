@@ -426,7 +426,7 @@
 -->
 <div class="audio-bar">
   <span>Audio</span>
-  <audio id="bgAudio" controls preload="none">
+  <audio controls loop id="bgAudio" controls preload="none">
     <source src="audio/light of seven 2.0.mp3" type="audio/mpeg">
     Your browser does not support audio.
   </audio>
@@ -442,13 +442,11 @@
     The retention mechanic:
     one shared stream timestamp -> one unified Earth activity dashboard.
   */
-  <script>
   // Select the audio element
   const audio = document.getElementById("bgAudio");
   
   // Set the volume to 20% (0.2)
   audio.volume = 0.2; 
-</script>
 
   const CONFIG = {
     // Illustrative global rates per second.
