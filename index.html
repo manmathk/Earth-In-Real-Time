@@ -3,541 +3,89 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>How Much History Passed While You Watched?</title>
-<style>
-  :root {
-    --bg: #05070b;
-    --panel: rgba(12, 16, 24, .82);
-    --text: #f4f7fb;
-    --muted: #8792a6;
-    --accent: #e9b44c;
-    --accent2: #72d6ff;
-  }
-
-  * { box-sizing: border-box; }
-
-  html, body {
-    margin: 0;
-    width: 100%;
-    min-height: 100%;
-    overflow-x: hidden;
-    overflow-y: auto;
-    background: var(--bg);
-    color: var(--text);
-    font-family: Inter, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-  }
-
-  body {
-    display: grid;
-    place-items: center;
-    background:
-      radial-gradient(circle at 50% 45%, rgba(233,180,76,.08), transparent 35%),
-      radial-gradient(circle at 20% 20%, rgba(114,214,255,.06), transparent 30%),
-      #05070b;
-  }
-
-  .noise {
-    position: fixed;
-    inset: 0;
-    pointer-events: none;
-    opacity: .035;
-    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 180 180' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.8'/%3E%3C/svg%3E");
-  }
-
-  .stage {
-    width: min(94vw, 760px);
-    min-height: 100dvh;
-    padding: clamp(22px, 5vh, 48px) clamp(12px, 4vw, 34px) 76px;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    position: relative;
-    text-align: center;
-    overflow: hidden;
-  }
-
-  .eyebrow {
-    color: var(--accent);
-    text-transform: uppercase;
-    letter-spacing: .22em;
-    font-size: clamp(10px, 1.8vw, 13px);
-    font-weight: 800;
-    margin-bottom: 18px;
-    animation: fadeUp .8s ease both;
-  }
-
-  h1 {
-    margin: 0 auto 34px;
-    max-width: 650px;
-    font-size: clamp(27px, 5vw, 48px);
-    line-height: 1.05;
-    letter-spacing: -.035em;
-    font-weight: 850;
-    animation: fadeUp .9s .08s ease both;
-  }
-
-  .watch-label {
-    color: var(--muted);
-    font-size: clamp(12px, 2vw, 15px);
-    text-transform: uppercase;
-    letter-spacing: .18em;
-    margin-bottom: 7px;
-    animation: fadeUp .8s .15s ease both;
-  }
-
-  .start-date {
-    font-size: clamp(22px, 5vw, 36px);
-    font-weight: 850;
-    letter-spacing: .08em;
-    margin-bottom: 10px;
-    color: var(--accent);
-    font-variant-numeric: tabular-nums;
-  }
-
-  .timer {
-    font-variant-numeric: tabular-nums;
-    font-size: clamp(58px, 14vw, 110px);
-    line-height: .95;
-    letter-spacing: -.055em;
-    font-weight: 900;
-    margin-bottom: 44px;
-    text-shadow: 0 0 34px rgba(233,180,76,.16);
-    animation: timerIn 1s .2s ease both;
-  }
-
-  .earth-title {
-    margin-top: 34px;
-  }
-
-  .earth-stats {
-    grid-template-columns: repeat(3, minmax(0, 1fr));
-    max-width: 680px;
-    width: 100%;
-    margin-bottom: 0;
-  }
-
-  .earth-stats .stat {
-    padding: clamp(10px, 2vw, 15px) 6px;
-    min-width: 0;
-  }
-
-  .earth-stats .number {
-    font-size: clamp(17px, 3.7vw, 25px);
-  }
-
-  .during {
-    color: var(--muted);
-    text-transform: uppercase;
-    letter-spacing: .2em;
-    font-size: 12px;
-    font-weight: 750;
-    margin-bottom: 16px;
-  }
-
-  .stats {
-    display: grid;
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: 12px;
-    max-width: 540px;
-    width: 100%;
-    margin: 0 auto;
-  }
-
-  .stat {
-    padding: 18px 12px;
-    border: 1px solid rgba(255,255,255,.075);
-    border-radius: 16px;
-    background: linear-gradient(145deg, rgba(255,255,255,.045), rgba(255,255,255,.015));
-    backdrop-filter: blur(10px);
-    animation: statIn .7s ease both;
-  }
-
-  .stat:nth-child(2) { animation-delay: .08s; }
-  .stat:nth-child(3) { animation-delay: .16s; }
-  .stat:nth-child(4) { animation-delay: .24s; }
-
-  .emoji {
-    font-size: clamp(22px, 5vw, 31px);
-    display: block;
-    margin-bottom: 7px;
-  }
-
-  .number {
-    display: block;
-    font-size: clamp(22px, 5vw, 31px);
-    font-weight: 900;
-    font-variant-numeric: tabular-nums;
-  }
-
-  .label {
-    display: block;
-    margin-top: 3px;
-    color: var(--muted);
-    font-size: 11px;
-    text-transform: uppercase;
-    letter-spacing: .11em;
-  }
-
-  .audio-bar {
-    position: fixed;
-    left: 50%;
-    bottom: 16px;
-    transform: translateX(-50%);
-    width: min(90vw, 460px);
-    display: flex;
-    align-items: center;
-    gap: 9px;
-    padding: 9px 12px;
-    border: 1px solid rgba(255,255,255,.08);
-    border-radius: 999px;
-    background: rgba(5,7,11,.78);
-    backdrop-filter: blur(12px);
-  }
-
-  .audio-bar span {
-    color: var(--muted);
-    font-size: 10px;
-    white-space: nowrap;
-    text-transform: uppercase;
-    letter-spacing: .08em;
-  }
-
-  audio {
-    width: 100%;
-    height: 28px;
-  }
-
-  .pulse {
-    position: absolute;
-    width: 240px;
-    height: 240px;
-    border-radius: 50%;
-    border: 1px solid rgba(233,180,76,.08);
-    left: 50%;
-    top: 50%;
-    transform: translate(-50%, -50%);
-    pointer-events: none;
-    animation: pulse 5s ease-in-out infinite;
-  }
-
-  .pulse::after {
-    content: "";
-    position: absolute;
-    inset: 24px;
-    border: 1px solid rgba(114,214,255,.05);
-    border-radius: 50%;
-  }
-
-  @keyframes fadeUp {
-    from { opacity: 0; transform: translateY(18px); }
-    to { opacity: 1; transform: translateY(0); }
-  }
-
-  @keyframes timerIn {
-    from { opacity: 0; transform: scale(.94); }
-    to { opacity: 1; transform: scale(1); }
-  }
-
-  @keyframes statIn {
-    from { opacity: 0; transform: translateY(12px); }
-    to { opacity: 1; transform: translateY(0); }
-  }
-
-  @keyframes pulse {
-    0%, 100% { transform: translate(-50%, -50%) scale(.82); opacity: .45; }
-    50% { transform: translate(-50%, -50%) scale(1.15); opacity: .9; }
-  }
-
-  @media (max-width: 600px) {
-    body {
-      overflow-y: auto;
-      overflow-x: hidden;
-    }
-
-    .stage {
-      min-height: 100dvh;
-      height: auto;
-      justify-content: center;
-      padding: 24px 12px 82px;
-    }
-
-    h1 {
-      margin-bottom: 22px;
-      font-size: clamp(25px, 7vw, 38px);
-    }
-
-    .watch-label {
-      font-size: 10px;
-      letter-spacing: .14em;
-    }
-
-    .start-date {
-      font-size: clamp(18px, 5vw, 28px);
-      margin-bottom: 6px;
-    }
-
-    .timer {
-      font-size: clamp(48px, 15vw, 76px);
-      margin-bottom: 26px;
-    }
-
-    .earth-title {
-      margin-top: 12px;
-      margin-bottom: 10px;
-      font-size: 10px;
-    }
-
-    .earth-stats {
-      grid-template-columns: repeat(2, minmax(0, 1fr));
-      gap: 7px;
-    }
-
-    .earth-stats .stat {
-      padding: 10px 5px;
-      border-radius: 12px;
-    }
-
-    .earth-stats .emoji {
-      font-size: 21px;
-      margin-bottom: 3px;
-    }
-
-    .earth-stats .number {
-      font-size: clamp(16px, 5vw, 23px);
-      line-height: 1.05;
-      overflow-wrap: anywhere;
-    }
-
-    .earth-stats .label {
-      font-size: 8px;
-      letter-spacing: .08em;
-    }
-
-    .audio-bar {
-      bottom: 8px;
-      width: calc(100vw - 20px);
-    }
-  }
-
-  @media (max-height: 700px) and (min-width: 601px) {
-    .stage {
-      padding-top: 18px;
-      padding-bottom: 68px;
-    }
-
-    h1 {
-      margin-bottom: 18px;
-    }
-
-    .timer {
-      margin-bottom: 20px;
-    }
-
-    .earth-title {
-      margin-top: 12px;
-    }
-
-    .earth-stats .stat {
-      padding: 9px 6px;
-    }
-  }
-
-  @media (max-height: 650px) and (max-width: 600px) {
-    .stage {
-      justify-content: flex-start;
-      padding-top: 18px;
-    }
-
-    .eyebrow {
-      margin-bottom: 10px;
-    }
-
-    h1 {
-      margin-bottom: 15px;
-    }
-
-    .timer {
-      margin-bottom: 16px;
-    }
-  }
-</style>
+<meta name="theme-color" content="#0b1220">
+<title>Earth In Real Time</title>
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Orbitron:wght@600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/app.css">
 </head>
-
 <body>
-<div class="noise"></div>
+  <div class="ambient" aria-hidden="true">
+    <canvas class="particles" id="particles"></canvas>
+    <div class="blob blob-a"></div>
+    <div class="blob blob-b"></div>
+    <div class="noise"></div>
+  </div>
 
-<main class="stage">
-  <div class="pulse"></div>
+  <header class="topbar">
+    <div class="brand">
+      <span data-brand-mark></span>
+      <span class="brand-copy">Earth In Real Time</span>
+      <span class="live">Live</span>
+    </div>
+    <div class="topbar-tools">
+      <button class="audio-toggle" type="button" id="audioToggle" aria-pressed="false" aria-label="Play audio">
+        <span class="visually-hidden">Play</span>
+      </button>
+      <time id="utcClock" datetime="">00:00:00 UTC</time>
+    </div>
+  </header>
 
-  <div class="eyebrow">Live History Counter</div>
+  <main class="page">
+    <p class="eyebrow">Live history counter</p>
+    <h1>How much history passed while you watched?</h1>
 
-  <h1>How Much History Passed<br>While You Watched?</h1>
+    <section class="clock-card" aria-labelledby="timer">
+      <div class="date-nav" role="group" aria-label="UTC date">
+        <button class="chip date-shift" type="button" id="prevDay" aria-label="Previous UTC day">Prev</button>
+        <p class="start-date" id="startDate">—</p>
+        <button class="chip date-shift" type="button" id="nextDay" aria-label="Next UTC day">Next</button>
+      </div>
+      <p class="watch-label" id="sinceLabel">Counts for this UTC day</p>
+      <p class="timer" id="timer">00:00:00</p>
+      <div class="hero-meta">
+        <span id="netPeople"></span>
+        <span class="paused-badge" id="pausedBadge" hidden>Paused</span>
+      </div>
+      <audio id="bgAudio" loop preload="none">
+        <source src="audio/light of seven 2.0.mp3" type="audio/mpeg">
+      </audio>
+    </section>
 
-  <div class="watch-label">We have been here since</div>
-  <div class="start-date" id="startDate">21 AUG 2026</div>
-  <div class="timer" id="timer">00:00:00</div>
-
-  <div class="during earth-title">Right now on Earth:</div>
-
-  <section class="stats earth-stats">
-    <div class="stat">
-      <span class="emoji">👶</span>
-      <span class="number" id="births">+0</span>
-      <span class="label">Births</span>
+    <div class="toolbar">
+      <div class="chips" role="tablist" aria-label="Metric categories">
+        <button class="chip" type="button" role="tab" data-cat="all" aria-selected="true">All</button>
+        <button class="chip" type="button" role="tab" data-cat="people" aria-selected="false">People</button>
+        <button class="chip" type="button" role="tab" data-cat="travel" aria-selected="false">Travel</button>
+        <button class="chip" type="button" role="tab" data-cat="planet" aria-selected="false">Planet</button>
+        <button class="chip" type="button" role="tab" data-cat="digital" aria-selected="false">Digital</button>
+      </div>
+      <div class="actions">
+        <button class="chip" type="button" id="pauseBtn" aria-pressed="false">Pause</button>
+        <button class="chip" type="button" id="shareBtn">Share</button>
+        <button class="chip" type="button" id="sourcesBtn">Sources</button>
+      </div>
     </div>
 
-    <div class="stat">
-      <span class="emoji">💀</span>
-      <span class="number" id="deaths">+0</span>
-      <span class="label">Deaths</span>
-    </div>
+    <section class="stats" id="stats" aria-live="polite" aria-label="Earth activity while you watched"></section>
 
-    <div class="stat">
-      <span class="emoji">✈️</span>
-      <span class="number" id="flights">+0</span>
-      <span class="label">Flights</span>
-    </div>
+    <footer class="site-footer">
+      Numbers are estimates: published yearly or daily totals divided across time.
+      They show scale, not a live sensor feed.
+    </footer>
+  </main>
 
-    <div class="stat">
-      <span class="emoji">🚗</span>
-      <span class="number" id="cars">+0</span>
-      <span class="label">Cars</span>
-    </div>
+  <div class="toast" id="toast" hidden role="status"></div>
 
-    <div class="stat">
-      <span class="emoji">🌳</span>
-      <span class="number" id="trees">−0</span>
-      <span class="label">Trees</span>
-    </div>
+  <dialog class="dialog" id="sourcesDialog">
+    <button class="dialog-close" type="button" aria-label="Close sources">Close</button>
+    <h2>Where the rates come from</h2>
+    <p>Each counter uses a published annual or daily total, then divides it into a steady per-second rate.</p>
+    <ol id="sourcesList"></ol>
+  </dialog>
 
-    <div class="stat">
-      <span class="emoji">📱</span>
-      <span class="number" id="data">+0 GB</span>
-      <span class="label">Data</span>
-    </div>
-  </section>
-</main>
-
-<!--
-  EXTERNAL AUDIO PLACEHOLDER
-  Replace "audio/ambient-history.mp3" with your external MP3 URL.
-  Example:
-  <source src="https://your-domain.com/audio.mp3" type="audio/mpeg">
--->
-<div class="audio-bar">
-  <span>Audio</span>
-  <audio controls loop id="bgAudio" controls preload="none">
-    <source src="audio/light of seven 2.0.mp3" type="audio/mpeg">
-    Your browser does not support audio.
-  </audio>
-</div>
-
-<script>
-  /*
-    CONFIGURATION
-    -----------------------------------------
-    Rates below are illustrative placeholders.
-    Replace with your preferred rates/data source.
-
-    The retention mechanic:
-    one shared stream timestamp -> one unified Earth activity dashboard.
-  */
-  // Select the audio element
-  const audio = document.getElementById("bgAudio");
-  
-  // Set the volume to 20% (0.2)
-  audio.volume = 0.2; 
-
-  const CONFIG = {
-    // Illustrative global rates per second.
-    // Replace with verified values when you finalize the stream.
-    birthsPerSecond: 4.5,
-    deathsPerSecond: 1.8,
-    flightsPerSecond: 1.16,
-    carsPerSecond: 1.2,
-    treesLostPerSecond: 0.8,
-    dataGBPerSecond: 125
-  };
-
-  // Set this to the exact moment the stream began.
-  const STREAM_START = new Date("2026-08-21T00:00:00+05:30");
-
-  let elapsed = Math.max(0, (Date.now() - STREAM_START.getTime()) / 1000);
-  let lastTimestamp = performance.now();
-
-  const timerEl = document.getElementById("timer");
-  const startDateEl = document.getElementById("startDate");
-
-  const birthsEl = document.getElementById("births");
-  const deathsEl = document.getElementById("deaths");
-  const flightsEl = document.getElementById("flights");
-  const carsEl = document.getElementById("cars");
-  const treesEl = document.getElementById("trees");
-  const dataEl = document.getElementById("data");
-
-  function formatDate(date) {
-    return date.toLocaleDateString("en-IN", {
-      day: "2-digit",
-      month: "short",
-      year: "numeric"
-    }).toUpperCase();
-  }
-
-  function formatTime(totalSeconds) {
-    const s = Math.floor(totalSeconds);
-    const h = Math.floor(s / 3600);
-    const m = Math.floor((s % 3600) / 60);
-    const sec = s % 60;
-
-    return [
-      String(h).padStart(2, "0"),
-      String(m).padStart(2, "0"),
-      String(sec).padStart(2, "0")
-    ].join(":");
-  }
-
-  function formatNumber(value) {
-    return Math.floor(value).toLocaleString("en-US");
-  }
-
-  function render() {
-    startDateEl.textContent = formatDate(STREAM_START);
-    timerEl.textContent = formatTime(elapsed);
-
-    // Every number is accumulated from the same "we have been here since" timer.
-    birthsEl.textContent = "+" + formatNumber(elapsed * CONFIG.birthsPerSecond);
-    deathsEl.textContent = "+" + formatNumber(elapsed * CONFIG.deathsPerSecond);
-    flightsEl.textContent = "+" + formatNumber(elapsed * CONFIG.flightsPerSecond);
-    carsEl.textContent = "+" + formatNumber(elapsed * CONFIG.carsPerSecond);
-    treesEl.textContent = "−" + formatNumber(elapsed * CONFIG.treesLostPerSecond);
-    dataEl.textContent = "+" + formatNumber(elapsed * CONFIG.dataGBPerSecond) + " GB";
-  }
-
-  function tick(now) {
-    const delta = (now - lastTimestamp) / 1000;
-    lastTimestamp = now;
-
-    elapsed += delta;
-    render();
-
-    requestAnimationFrame(tick);
-  }
-
-  render();
-  requestAnimationFrame(tick);
-
-  /*
-    OPTIONAL EXTERNAL AUDIO API
-    -----------------------------------------
-    From another script you can control the audio with:
-
-      document.getElementById("").play();
-      document.getElementById("").pause();
-      document.getElementById("").volume = 0.5;
-
-    For autoplay, browsers generally require the user to interact
-    with the page first unless the audio is muted.
-  */
-</script>
+  <script type="module" src="js/app.js"></script>
 </body>
 </html>

@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48">
+  <rect width="48" height="48" rx="12" fill="#0b1220"/>
+  <defs>
+    <linearGradient id="earth-core" x1="12" y1="8" x2="36" y2="40">
+      <stop offset="0" stop-color="#6366f1"/>
+      <stop offset="1" stop-color="#1e293b"/>
+    </linearGradient>
+    <linearGradient id="earth-land" x1="14" y1="10" x2="34" y2="36">
+      <stop offset="0" stop-color="#fbbf24"/>
+      <stop offset="1" stop-color="#d97706"/>
+    </linearGradient>
+  </defs>
+  <ellipse cx="24" cy="24" rx="22" ry="8" transform="rotate(-28 24 24)" fill="none" stroke="#f59e0b" stroke-width="1.5"/>
+  <circle cx="24" cy="24" r="14" fill="url(#earth-core)"/>
+  <path fill="url(#earth-land)" d="M13.2 17.2c2.4-3.4 6.8-4.6 9.4-2.1 1.6 1.6.8 3.6-1.1 4.6-2.6 1.4-6.2 1.2-8.3-2.5Zm10.1-2.4c3.2-1.4 7.6-.2 8.8 2.8 1 2.4-1.2 4.2-3.4 4.1-2.6-.1-5.4-1.6-6.2-4.2-.4-1.2.1-2.2.8-2.7ZM14.6 23.4c3.2.2 5.8 2.4 6.4 5 .8 3.4-1.6 5.4-4.4 4.6-3.2-.8-5.6-3.4-4.6-6.4.3-1 .4-1.8.6-3.2Zm9.8 1.2c3.4 1.2 7 .8 8.2 3.4.8 2-1.4 3.8-3.8 3.8-3.2 0-6.2-2.2-4.4-7.2Z"/>
+  <ellipse cx="24" cy="24" rx="14" ry="5.4" fill="none" stroke="#93c5fd" stroke-width=".8" opacity=".4"/>
+  <circle cx="41.4" cy="13.2" r="2.1" fill="#fbbf24"/>
+</svg>
