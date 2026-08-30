@@ -23,7 +23,7 @@ if (brandSlot) brandSlot.innerHTML = BRAND_MARK;
 
 /* Browser autoplay policies can block an unmuted soundtrack until interaction. */
 els.audio.preload = "auto";
-els.audio.volume = 0.4;
+els.audio.volume = 0.6;
 let audioRequested = false;
 
 function currentElapsed() { return state.paused ? state.frozenElapsed : getElapsedSeconds(state.mode, Date.now(), sessionStart, state.selectedDate); }
