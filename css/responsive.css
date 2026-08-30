@@ -1,62 +1,94 @@
-/* Final responsive pass: keep the complete counter dashboard visible. */
+/* Responsive layout override — keeps the full live dashboard visible and prevents the hero from pushing metrics below the fold. */
 
-/* Wide desktop: 12 metrics = 6 columns x 2 rows. */
-@media (min-width: 1051px) {
-  html, body { overflow-y: hidden; }
-  .page { padding-bottom: 8px; }
-  .eyebrow { margin-bottom: 4px; font-size: 9px; }
-  .page h1 { margin-bottom: 12px; font-size: clamp(28px, 4vw, 44px); }
-  .clock-card { padding: 14px 20px 16px; }
-  .date-nav { margin-bottom: 10px; }
-  .timer { font-size: clamp(48px, 6vw, 72px); }
-  .hero-meta { margin-top: 8px; min-height: 20px; }
-  .toolbar { margin: 14px 0 10px; }
-  .stats { grid-template-columns: repeat(6, minmax(0, 1fr)); gap: 8px; }
-  .stat { padding: 10px 9px 9px; border-radius: 12px; }
-  .stat-icon { width: 38px; height: 38px; margin-bottom: 7px; border-radius: 12px; }
-  .stat-icon svg { width: 22px; height: 22px; }
-  .stat-value { font-size: clamp(15px, 1.55vw, 21px); }
-  .stat-label { margin-top: 4px; font-size: 9px; }
-  .stat-rate { margin-top: 2px; font-size: 9px; }
-  .site-footer { margin-top: 8px; font-size: 9px; }
+@media (min-width: 1051px){
+  html,body{overflow-x:hidden;overflow-y:auto}
+  .page{padding:14px 0 28px}
+  .live-ribbon{margin-bottom:10px}
+  .hero{padding:22px 26px 18px}
+  .world-stage{height:120px}
+  .world-core{width:82px;height:82px;font-size:13px}
+  .world-glow{width:125px;height:125px}
+  .ring-a{width:140px;height:50px}.ring-b{width:185px;height:65px}
+  .orbit-1{width:190px;height:190px}.orbit-2{width:250px;height:115px}.orbit-3{width:310px;height:72px}
+  .hero-subtitle{margin-top:8px}
+  .hero-metrics{margin-top:0}
+  .hero-metric{padding:11px 12px}
+  .timer{font-size:clamp(38px,5vw,62px)}
+  .date-nav{margin-top:8px}
+  .event-strip{margin-top:8px;padding:8px 12px}
+  .hero-actions{margin-top:8px}
+  .challenge{margin:10px 0 12px;padding:11px 15px}
+  .challenge-counter{width:48px;height:48px;font-size:19px}
+  .toolbar{margin:10px 0 8px}
+  .stats{grid-template-columns:repeat(6,minmax(0,1fr));gap:7px}
+  .stat{padding:9px 8px;border-radius:12px}
+  .stat-icon{width:34px;height:34px;margin-bottom:5px;border-radius:10px}
+  .stat-icon svg{width:19px;height:19px}
+  .stat-value{font-size:clamp(13px,1.35vw,18px)}
+  .stat-label{font-size:8px;margin-top:3px}
+  .stat-rate{font-size:8px;margin-top:1px}
+  .engagement-footer{margin-top:8px}
+  .site-footer{margin-top:6px;font-size:8px}
 }
 
-/* Smaller desktop/tablet: 4 columns x 3 rows rather than the old 3-column layout. */
-@media (min-width: 681px) and (max-width: 1050px) {
-  .stats { grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 8px; }
-  .stat { padding: 12px 10px; }
-  .stat-icon { width: 42px; height: 42px; margin-bottom: 7px; }
-  .stat-value { font-size: clamp(15px, 2vw, 22px); }
-  .stat-label, .stat-rate { font-size: 9px; }
+@media (min-width:681px) and (max-width:1050px){
+  html,body{overflow-x:hidden;overflow-y:auto}
+  .page{padding:14px 0 30px}
+  .world-stage{height:145px}
+  .hero-metrics{grid-template-columns:1.5fr .8fr}
+  .stats{grid-template-columns:repeat(4,minmax(0,1fr));gap:8px}
+  .stat{padding:11px 9px}
+  .stat-icon{width:38px;height:38px;margin-bottom:6px}
+  .stat-value{font-size:clamp(14px,2vw,20px)}
+  .stat-label,.stat-rate{font-size:8px}
 }
 
-/* Mobile: keep all metrics in a compact 2-column dashboard. */
-@media (max-width: 680px) {
-  html, body { overflow-x: hidden; }
-  .page { padding-bottom: calc(10px + env(safe-area-inset-bottom)); }
-  .stats { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 6px; }
-  .stat { min-height: 0; padding: 9px 8px; }
-  .stat-icon { width: 34px; height: 34px; margin-bottom: 6px; border-radius: 10px; }
-  .stat-icon svg { width: 19px; height: 19px; }
-  .stat-value { font-size: clamp(14px, 4vw, 20px); }
-  .stat-label { margin-top: 3px; font-size: 8px; }
-  .stat-rate { margin-top: 1px; font-size: 8px; }
+@media (max-width:680px){
+  html,body{overflow-x:hidden;overflow-y:auto}
+  .page{width:min(100% - 14px,1220px);padding:9px 0 24px}
+  .topbar{padding:10px 9px}
+  .brand-copy{font-size:9px}
+  .signal-pill{display:none}
+  #utcClock{font-size:8px}
+  .live-ribbon{margin-bottom:8px;padding:7px 9px}
+  .live-ribbon span,.live-ribbon b{font-size:7px}
+  .hero{padding:17px 10px 13px;border-radius:20px}
+  .page h1{font-size:clamp(27px,9vw,40px)}
+  .hero-subtitle{font-size:10px;margin-top:8px}
+  .world-stage{height:115px}
+  .world-core{width:72px;height:72px;font-size:11px}
+  .world-glow{width:105px;height:105px}
+  .ring-a{width:115px;height:42px}.ring-b{width:155px;height:55px}
+  .orbit-1{width:165px;height:165px}.orbit-2{width:215px;height:100px}.orbit-3{width:260px;height:62px}
+  .hero-metrics{grid-template-columns:1fr;gap:7px}
+  .hero-metric{padding:10px 8px}
+  .timer{font-size:clamp(31px,12vw,52px)}
+  .side-stat{min-height:60px}
+  .side-stat strong{font-size:25px}
+  .date-nav{grid-template-columns:40px minmax(0,1fr) 40px;margin-top:7px}
+  .start-date{font-size:12px}
+  .event-strip{margin-top:7px;padding:8px;font-size:9px}
+  .event-detail{font-size:8px}
+  .hero-actions{gap:6px;margin-top:7px}
+  .primary-action,.secondary-action{min-height:39px;padding:0 10px;font-size:8px}
+  .challenge{margin:9px 0 11px;padding:11px 12px}
+  .challenge h2{font-size:17px}.challenge p{font-size:9px}.challenge-counter{width:46px;height:46px;border-radius:13px;font-size:18px}
+  .toolbar{margin:9px 0 7px;display:block}.category-heading{text-align:center;margin-bottom:7px}.category-tabs{justify-content:center;gap:4px}
+  .chip{min-height:34px;padding:0 9px;font-size:8px}
+  .stats{grid-template-columns:repeat(2,minmax(0,1fr));gap:5px}
+  .stat{padding:8px 7px;min-height:0}
+  .stat-icon{width:31px;height:31px;margin-bottom:5px;border-radius:9px}.stat-icon svg{width:17px;height:17px}
+  .stat-value{font-size:clamp(13px,4vw,18px)}.stat-label,.stat-rate{font-size:7px}
+  .engagement-footer{grid-template-columns:1fr;gap:5px;margin-top:7px}.engagement-card{padding:9px}
+  .site-footer{font-size:8px;margin-top:6px}
 }
 
-/* Very small phones: 2 columns still, with tighter cards. */
-@media (max-width: 380px) {
-  .stats { gap: 4px; }
-  .stat { padding: 7px 6px; }
-  .stat-icon { width: 30px; height: 30px; margin-bottom: 4px; border-radius: 9px; }
-  .stat-icon svg { width: 17px; height: 17px; }
-  .stat-value { font-size: 13px; }
-  .stat-label, .stat-rate { font-size: 7px; }
+@media (max-width:380px){
+  .world-stage{height:100px}.hero{padding:14px 8px 11px}.hero-subtitle{display:none}
+  .timer{font-size:29px}.side-stat{min-height:52px}.side-stat strong{font-size:22px}
+  .stats{gap:4px}.stat{padding:7px 6px}.stat-icon{width:28px;height:28px}.stat-icon svg{width:16px;height:16px}.stat-value{font-size:12px}.stat-label,.stat-rate{font-size:6px}
 }
 
-/* Landscape phones: use four columns when there is enough horizontal space. */
-@media (max-width: 900px) and (orientation: landscape) and (min-width: 600px) {
-  .stats { grid-template-columns: repeat(4, minmax(0, 1fr)); }
-  .clock-card { padding: 8px 12px; }
-  .toolbar { margin: 8px 0 6px; }
-  .stat { padding: 7px; }
+@media (max-width:900px) and (orientation:landscape) and (min-width:600px){
+  .world-stage{height:105px}.hero{padding:13px 18px}.hero-metrics{grid-template-columns:1.6fr .8fr}.timer{font-size:44px}.challenge{padding:9px 13px}.stats{grid-template-columns:repeat(4,minmax(0,1fr))}
 }
