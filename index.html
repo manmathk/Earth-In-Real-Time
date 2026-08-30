@@ -3,30 +3,33 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="theme-color" content="#0b1220">
+<meta name="theme-color" content="#050816">
 <title>Earth In Real Time</title>
 <link rel="icon" href="favicon.svg" type="image/svg+xml">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Orbitron:wght@600;700;800&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;700&family=Orbitron:wght@600;700;800&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="css/app.css">
 <link rel="stylesheet" href="css/responsive.css">
 </head>
 <body>
   <div class="ambient" aria-hidden="true">
     <canvas class="particles" id="particles"></canvas>
-    <div class="blob blob-a"></div>
-    <div class="blob blob-b"></div>
+    <div class="grid-floor"></div>
+    <div class="aurora aurora-a"></div>
+    <div class="aurora aurora-b"></div>
+    <div class="scanlines"></div>
     <div class="noise"></div>
   </div>
 
   <header class="topbar">
     <div class="brand">
       <span data-brand-mark></span>
-      <span class="brand-copy">Earth In Real Time</span>
-      <span class="live">Live</span>
+      <span class="brand-copy">EARTH // LIVE</span>
+      <span class="live">ON AIR</span>
     </div>
     <div class="topbar-tools">
+      <span class="signal-pill"><i></i> LIVE FEED</span>
       <button class="audio-toggle" type="button" id="audioToggle" aria-pressed="false" aria-label="Play audio">
         <span class="visually-hidden">Play</span>
       </button>
@@ -35,46 +38,98 @@
   </header>
 
   <main class="page">
-    <p class="eyebrow">Live history counter</p>
-    <h1>How much history passed while you watched?</h1>
+    <div class="live-ribbon"><span>REAL-TIME COUNTDOWN</span><b>THE CLOCK NEVER STOPS</b></div>
 
-    <section class="clock-card" aria-labelledby="timer">
+    <section class="hero" aria-labelledby="heroTitle">
+      <div class="hero-copy">
+        <p class="eyebrow">While you are watching…</p>
+        <h1 id="heroTitle">THE WORLD IS MOVING.</h1>
+        <p class="hero-subtitle">Every second, something changes. Stay long enough to see how much.</p>
+      </div>
+
+      <div class="world-stage" id="worldStage" aria-hidden="true">
+        <div class="orbit orbit-1"></div>
+        <div class="orbit orbit-2"></div>
+        <div class="orbit orbit-3"></div>
+        <div class="world-glow"></div>
+        <div class="world-ring ring-a"></div>
+        <div class="world-ring ring-b"></div>
+        <div class="world-core">EARTH</div>
+        <div class="world-pulse pulse-a"></div>
+        <div class="world-pulse pulse-b"></div>
+      </div>
+
+      <div class="hero-metrics">
+        <div class="hero-metric">
+          <span class="hero-metric-label">YOU HAVE BEEN WATCHING</span>
+          <strong class="timer" id="timer">00:00:00</strong>
+        </div>
+        <div class="hero-metric side-stat">
+          <span class="hero-metric-label">NET PEOPLE</span>
+          <strong id="netPeople">+0</strong>
+          <small>since midnight UTC</small>
+        </div>
+      </div>
+
       <div class="date-nav" role="group" aria-label="UTC date">
-        <button class="chip date-shift" type="button" id="prevDay" aria-label="Previous UTC day">Prev</button>
-        <p class="start-date" id="startDate">—</p>
-        <button class="chip date-shift" type="button" id="nextDay" aria-label="Next UTC day">Next</button>
+        <button class="chip date-shift" type="button" id="prevDay" aria-label="Previous UTC day">‹</button>
+        <div>
+          <p class="watch-label" id="sinceLabel">Counts so far on this UTC day</p>
+          <p class="start-date" id="startDate">—</p>
+        </div>
+        <button class="chip date-shift" type="button" id="nextDay" aria-label="Next UTC day">›</button>
       </div>
-      <p class="watch-label" id="sinceLabel">Counts for this UTC day</p>
-      <p class="timer" id="timer">00:00:00</p>
-      <div class="hero-meta">
-        <span id="netPeople"></span>
-        <span class="paused-badge" id="pausedBadge" hidden>Paused</span>
+
+      <div class="event-strip" aria-live="polite">
+        <span class="event-dot"></span>
+        <strong id="eventHeadline">THE PLANET IS BUSY</strong>
+        <span class="event-detail" id="eventDetail">Watch the counters jump in real time.</span>
       </div>
+
+      <div class="hero-actions">
+        <button class="primary-action" type="button" id="pauseBtn" aria-pressed="false">PAUSE THE WORLD</button>
+        <button class="secondary-action" type="button" id="shareBtn">SHARE THIS MOMENT</button>
+        <button class="secondary-action" type="button" id="sourcesBtn">SOURCES</button>
+      </div>
+
       <audio id="bgAudio" loop preload="none">
         <source src="audio/light of seven 2.0.mp3" type="audio/mpeg">
       </audio>
     </section>
 
-    <div class="toolbar">
-      <div class="chips" role="tablist" aria-label="Metric categories">
-        <button class="chip" type="button" role="tab" data-cat="all" aria-selected="true">All</button>
-        <button class="chip" type="button" role="tab" data-cat="people" aria-selected="false">People</button>
-        <button class="chip" type="button" role="tab" data-cat="travel" aria-selected="false">Travel</button>
-        <button class="chip" type="button" role="tab" data-cat="planet" aria-selected="false">Planet</button>
-        <button class="chip" type="button" role="tab" data-cat="digital" aria-selected="false">Digital</button>
+    <section class="challenge" aria-label="Engagement prompt">
+      <div>
+        <span class="challenge-kicker">DON'T LOOK AWAY</span>
+        <h2 id="challengeTitle">Stay for 10 seconds.</h2>
+        <p id="challengeText">See the counters transform before your eyes.</p>
       </div>
-      <div class="actions">
-        <button class="chip" type="button" id="pauseBtn" aria-pressed="false">Pause</button>
-        <button class="chip" type="button" id="shareBtn">Share</button>
-        <button class="chip" type="button" id="sourcesBtn">Sources</button>
+      <div class="challenge-counter" id="challengeCounter">10</div>
+    </section>
+
+    <div class="toolbar">
+      <div class="category-heading">
+        <span>LIVE ACTIVITY</span>
+        <small>What is happening on Earth right now</small>
+      </div>
+      <div class="chips category-tabs" role="tablist" aria-label="Metric categories">
+        <button class="chip" type="button" role="tab" data-cat="all" aria-selected="true">ALL</button>
+        <button class="chip" type="button" role="tab" data-cat="people" aria-selected="false">PEOPLE</button>
+        <button class="chip" type="button" role="tab" data-cat="travel" aria-selected="false">TRAVEL</button>
+        <button class="chip" type="button" role="tab" data-cat="planet" aria-selected="false">PLANET</button>
+        <button class="chip" type="button" role="tab" data-cat="digital" aria-selected="false">DIGITAL</button>
       </div>
     </div>
 
     <section class="stats" id="stats" aria-live="polite" aria-label="Earth activity while you watched"></section>
 
+    <section class="engagement-footer">
+      <div class="engagement-card"><span>⚡</span><strong id="fastestMetric">FASTEST: —</strong><small>the number moving quickest</small></div>
+      <div class="engagement-card"><span>🌍</span><strong>YOU ARE WATCHING REAL SCALE</strong><small>not a live sensor feed — published estimates visualized continuously</small></div>
+      <div class="engagement-card"><span>↗</span><strong>KEEP THE STREAM OPEN</strong><small>the longer you watch, the bigger the numbers get</small></div>
+    </section>
+
     <footer class="site-footer">
-      Numbers are estimates: published yearly or daily totals divided across time.
-      They show scale, not a live sensor feed.
+      Numbers are estimates: published yearly or daily totals divided across time. They show scale, not a live sensor feed.
     </footer>
   </main>
 
