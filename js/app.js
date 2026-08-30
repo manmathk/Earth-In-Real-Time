@@ -49,7 +49,7 @@ const state = {
 
 const brandSlot = document.querySelector("[data-brand-mark]");
 if (brandSlot) brandSlot.innerHTML = BRAND_MARK;
-els.audio.volume = 0.2;
+els.audio.volume = 0.4;
 
 function currentElapsed() {
   if (state.paused) return state.frozenElapsed;
